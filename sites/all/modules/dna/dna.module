@@ -1,0 +1,80 @@
+<?php
+function dna_menu() {
+    $items['dna'] = array(
+        'title' => 'DNA MATCHER',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('dna_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['dna_success_page'] = array(
+        'title' => 'LOOK, IT\'S DNA!',
+        'page callback' => array('dna_success'),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function dna_form() {
+    $form['dna_input'] = array(
+        '#title' => 'Your DNA input:',
+        '#type' => 'textfield',
+        '#description' => 'Enter "A", "T", "C", and "G" only.',
+        '#required' => TRUE,
+        '#element_validate' => array('element_validate_dna'),
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'GIT IT YO',
+    );
+
+    return $form;
+}
+
+function element_validate_dna($dna) {
+    $dna_string = strtoupper($dna['#value']);
+    $dna_string_split = str_split($dna_string);
+    foreach ($dna_string_split as $value) {
+        if ($value != 'A' && $value != 'T' && $value != 'C' && $value != 'G' ) {
+            form_set_error('dna_input', t('Please only use the characters A, T, G, or C!'));
+        }
+    }
+}
+
+function dna_form_submit($form, &$form_state) {
+    $user_input = strtoupper($form_state['values']['dna_input']);
+    $result = dna($user_input);
+    $_SESSION['dna_output'] = $result;
+    $form_state['redirect'] = 'dna_success_page';
+}
+
+function dna($user_input) {
+    $input_array = str_split($user_input);
+    $output_array = [];
+    $_SESSION['dna_input'] = implode(" ", $input_array);
+
+    for ($i = 0; $i < strlen($user_input); $i++) {
+        if ($input_array[$i] == 'A') {
+            $output_array[$i] = 'T';
+        } elseif ($input_array[$i] == 'T') {
+            $output_array[$i] = 'A';
+        } elseif ($input_array[$i] == 'C') {
+            $output_array[$i] = 'G';
+        } elseif ($input_array[$i] == 'G') {
+            $output_array[$i] = 'C';
+        }
+    }
+
+    $output = implode(" ", $output_array);
+
+    return $output;
+}
+
+function dna_success() {
+    $result = $_SESSION['dna_output'];
+
+    return '<p>Your DNA string: ' . $_SESSION['dna_input'] . '</p><p>The matching DNA string: <strong>' . $result . '</strong></p>';
+}

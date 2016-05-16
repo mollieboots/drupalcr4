@@ -1,0 +1,7 @@
+name = DNA Generator
+description = Input some nucleotides and generate the full DNA string!
+package = Custom Modules
+core = 7.x
+files[] = dna.module
+files[] = dna.test
+dependencies[] = simpletest

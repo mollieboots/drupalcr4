@@ -1,3 +1,64 @@
 <?php
 
-class 
+class DnaModuleTestCase extends DrupalUnitTestCase {
+
+    public static function getInfo() {
+        return array(
+            'name' => 'DNA Test',
+            'description' => 'Test my DNA module',
+            'group' => 'Custom Modules',
+        );
+    }
+
+    function testDna() {
+        //English description
+        $description = "An input of 'A' returns 'T'";
+
+        //Arrange
+        $input = 'A';
+
+        //Act
+        $result = dna($input);
+
+        //Assert
+        $ouput = 'T';
+        $this->assertEqual($result, $ouput, $description);
+
+        $description = "Input of 'G' returns 'C' ";
+        $input = 'G';
+        $result = dna($input);
+        $ouput = 'C';
+        $this->assertEqual($result, $ouput, $description);
+
+        $description = "Input of 'C' returns 'G' ";
+        $input = 'C';
+        $result = dna($input);
+        $ouput = 'G';
+        $this->assertEqual($result, $ouput, $description);
+
+        $description = "Input of 'T' returns 'A' ";
+        $input = 'T';
+        $result = dna($input);
+        $ouput = 'A';
+        $this->assertEqual($result, $ouput, $description);
+    }
+}
+
+// class DnaTestCase extends DrupalWebTestCase {
+//     public static function getInfo() {
+//         return array(
+//             'name' => 'DNA Test',
+//             'description' => 'Test my DNA module',
+//             'group' => 'Custom Modules',
+//         );
+//     }
+//
+//     public function setUp() {
+//         parent::setUp(array('dna'));
+//     }
+//
+//     function testDna() {
+//         $this->drupalGet('dna');
+//         $this->assertText('DNA MATCHER');
+//     }
+// }

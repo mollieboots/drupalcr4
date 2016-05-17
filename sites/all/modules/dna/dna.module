@@ -35,11 +35,11 @@ function dna_form() {
 }
 
 function element_validate_dna($dna) {
-    $dna_string = strtoupper($dna['#value']);
-    $dna_string_split = str_split($dna_string);
-    foreach ($dna_string_split as $value) {
-        if ($value != 'A' && $value != 'T' && $value != 'C' && $value != 'G' ) {
-            form_set_error('dna_input', t('Please only use the characters A, T, G, or C!'));
+    $input = strtoupper($dna['#value']);
+    $dna_split = str_split($input);
+    foreach ($dna_split as $letter) {
+        if ($letter != 'A' && $letter != 'T' && $letter != 'C' && $letter != 'G' ) {
+            form_set_error('input', t('Please only use the characters A, T, G, or C!'));
         }
     }
 }
@@ -76,5 +76,5 @@ function dna($user_input) {
 function dna_success() {
     $result = $_SESSION['dna_output'];
 
-    return '<p>Your DNA string: ' . $_SESSION['dna_input'] . '</p><p>The matching DNA string: <strong>' . $result . '</strong></p>';
+    return '<p>Your DNA string: ' . $_SESSION['dna_input'] . '</p><p>The matching DNA string: ' . $result . '</p>';
 }

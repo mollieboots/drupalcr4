@@ -41,24 +41,43 @@ class DnaModuleTestCase extends DrupalUnitTestCase {
         $result = dna($input);
         $ouput = 'A';
         $this->assertEqual($result, $ouput, $description);
+
+        $description = "Input of 'TT' returns 'A A' ";
+        $input = 'TT';
+        $result = dna($input);
+        $ouput = 'A A';
+        $this->assertEqual($result, $ouput, $description);
+
+        $description = "Input of 'TTAG' returns 'A A T C' ";
+        $input = 'TTAG';
+        $result = dna($input);
+        $ouput = 'A A T C';
+        $this->assertEqual($result, $ouput, $description);
     }
 }
 
-// class DnaTestCase extends DrupalWebTestCase {
-//     public static function getInfo() {
-//         return array(
-//             'name' => 'DNA Test',
-//             'description' => 'Test my DNA module',
-//             'group' => 'Custom Modules',
-//         );
-//     }
-//
-//     public function setUp() {
-//         parent::setUp(array('dna'));
-//     }
-//
-//     function testDna() {
-//         $this->drupalGet('dna');
-//         $this->assertText('DNA MATCHER');
-//     }
-// }
+class DnaTestCase extends DrupalWebTestCase {
+    public static function getInfo() {
+        return array(
+            'name' => 'DNA Test',
+            'description' => 'Test my DNA module',
+            'group' => 'Custom Modules',
+        );
+    }
+
+    public function setUp() {
+        parent::setUp(array('dna'));
+    }
+
+    function testDnaInterface() {
+        $this->drupalGet('dna');
+        $this->assertText('DNA MATCHER');
+    }
+
+    public function testDnaGeneratorMapping() {
+       $input['dna_input'] = 'AATG';
+
+       $this->drupalPost('/dna', $input, t('GIT IT YO'));
+       $this->assertText(t('T T A C'), t('Test passed.'));
+    }
+}
